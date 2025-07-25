@@ -25,7 +25,6 @@ summary_my_model <- summary(my_model)
 origin_df <- as.data.frame(summary_my_model$ByOrigin)
 totals_df <- as.data.frame(summary_my_model$Totals)
 
-# Replace NaN/Inf with blank ("") for Excel compatibility
 origin_df[] <- lapply(origin_df, function(x) ifelse(is.nan(x) | is.infinite(x), "", x))
 totals_df[] <- lapply(totals_df, function(x) ifelse(is.nan(x) | is.infinite(x), "", x))
 
@@ -37,7 +36,6 @@ write.xlsx(list(
 
 cat("\nExported cleaned results to 'mack_chainladder_results_cleaned.xlsx'.\n")
 
-# (Optional) Plots, suppressing warnings for a clean run
 suppressWarnings(plot(my_model, which = 1))
 suppressWarnings(plot(my_model, which = 2))
 
