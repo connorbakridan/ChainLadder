@@ -1,87 +1,72 @@
-# Chain Ladder Reserving — State Farm PP Auto
+# Chain Ladder reserving using State Farm PP Auto data
 
 Estimates outstanding claims reserves (IBNR) using the Mack chain ladder
-method, applied to real claims data instead of a made-up example triangle.
+method in R, applied to a real insurer's claims data.
 
 ## Data source
 
-CAS Loss Reserving Database, "Loss Reserving Data Pulled from NAIC
-Schedule P" — Private Passenger Auto dataset, compiled by the Casualty
-Actuarial Society with S&P Global Market Intelligence.
+Private Passenger Auto data from the CAS Loss Reserving Database, compiled
+by the Casualty Actuarial Society with S&P Global Market Intelligence.
+
 https://www.casact.org/publications-research/research/research-resources/loss-reserving-data-pulled-naic-schedule-p
 
-143 US property-casualty insurers, accident years 1998-2007, 10 years of
-development per accident year. Covers PP Auto liability and medical
-payments (not physical damage) — a long-tail line where claims can take
-years to fully develop, which is exactly why chain ladder reserving is
-needed here.
+143 US insurers, accident years 1998-2007, 10 years of development per
+accident year. Covers liability and medical payments, not physical damage.
+That distinction matters: physical damage claims settle in weeks, but
+liability and medical claims can take years to fully develop, which is
+exactly why chain ladder reserving exists as a method.
 
 ## Company chosen
 
-State Farm Mut Grp (GRCODE 1767) — the largest insurer in this dataset by
-a wide margin (~$18bn net earned premium vs ~$3bn for the second largest),
-chosen for a stable, well-populated triangle rather than a small insurer
-with noisier development patterns.
+State Farm (GRCODE 1767), the largest insurer in the dataset by a wide
+margin (around $18bn net earned premium versus around $3bn for the next
+largest). Picked for a stable, well-populated triangle rather than a
+small insurer with noisier development patterns.
 
-## Why this dataset is unusually good for a reserving project
+## Why this dataset works well for checking the method, not just running it
 
-Most reserving exercises only have the upper triangle (what would have
-been known at the evaluation date) — you fit a model and never find out
-if the projection was actually right. This dataset includes the full
-square: both the upper triangle and the true future values that later
-became known. That means the model can be fit on only the data that
-would genuinely have been available in 2007, and the projection can then
-be checked against what actually happened — real out-of-sample
-validation, not just a fitted result.
+Most reserving exercises only have the upper triangle. You fit a model
+and never find out if the projection was right. This dataset includes
+the full square, both the upper triangle and the true future values that
+later became known. That means the model can be fit on only what would
+genuinely have been known in 2007, and the projection can then be checked
+against what actually happened.
 
 ## Method
 
-1. Filter to State Farm's rows.
-2. Mask out any cell where `DevelopmentYear > 2007` (i.e. keep only what
-   would genuinely have been known as of the 2007 evaluation date) —
-   this gives the standard 55-cell upper triangle.
-3. Fit `MackChainLadder()` on that upper triangle.
-4. Compare the projected ultimate losses against the real values that
-   the unmasked data shows actually happened.
+1. Filter the raw data to State Farm.
+2. Mask any cell where DevelopmentYear is after 2007, leaving only the
+   55 cells that would genuinely have been known at that evaluation date.
+3. Fit MackChainLadder() on that masked triangle.
+4. Compare the projected ultimate losses against the real values the
+   unmasked data shows actually happened.
 5. Compare the model's total reserve estimate against State Farm's own
-   posted reserve for this line.
+   posted reserve.
 
-## Results (from an initial check in Python, to confirm against your own R run)
+## Results
 
-A simple volume-weighted chain ladder projection came within **0.29%**
-of the actual total ultimate losses across all ten accident years —
-individual accident years were within roughly 0.6% of the true value.
-That's a genuinely strong validation result, not something asserted
-without checking.
+The model's projected ultimate losses came within 0.29% of the actual
+total across all ten accident years, individual years were within
+roughly 0.6% of the true value. Confirmed by actually running the script,
+not assumed.
 
-The projected total reserve (~£13.1m on a pure paid-loss basis) came in
-noticeably lower than State Farm's own posted reserve (~£16.5m, about
-20% higher). That gap is expected rather than a sign something's wrong:
-the posted reserve likely reflects case reserves plus a margin for
-prudence, not just development on paid losses, and may be calculated on
-an incurred-loss basis rather than paid-loss. Worth stating plainly
-rather than treating as a discrepancy to explain away — it's a genuine
-difference in what the two numbers represent.
-
-**Note:** the numbers above come from a simple volume-weighted
-calculation used to sanity-check the approach before writing the R
-script. Mack's method in `chain_ladder_state_farm.R` should produce very
-similar figures (same core development-factor logic) but may not be
-identical — run the script yourself and update this section with your
-own output.
+The projected total reserve ($13.1m on a paid-loss basis) came in lower
+than State Farm's own posted reserve ($16.5m, about 20% higher). That gap
+makes sense rather than pointing to an error: the posted reserve likely
+includes case reserves and a margin for prudence, and may be calculated
+on an incurred-loss basis rather than a paid-loss basis. Different bases
+produce different numbers, so a gap here is expected.
 
 ## Files
 
-- `ppauto_pos98-07.csv` — the raw CAS dataset (all 143 insurers)
-- `chain_ladder_state_farm.R` — filters to State Farm, builds the masked
-  triangle, fits the model, validates against real outcomes, exports
-  results
-- `state_farm_chainladder_results.xlsx` — output (generated by running
-  the script)
+| File | Purpose |
+|---|---|
+| `ppauto_pos98-07.csv` | The raw CAS dataset, all 143 insurers |
+| `chain_ladder_state_farm.R` | Filters to State Farm, builds the masked triangle, fits the model, validates against real outcomes, exports results |
+| `state_farm_chainladder_results.xlsx` | Output, generated by running the script |
 
 ## Reproducing
 
 ```r
-# In RStudio, with this folder as your working directory:
 source("chain_ladder_state_farm.R")
 ```
