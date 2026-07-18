@@ -43,13 +43,13 @@ what happened in actuality.
 
 The model's projected ultimate losses came within 0.29% of the actual
 total across all ten accident years, individual years were within
-roughly 0.6% of the true value. Confirmed by actually running the script.
+roughly 0.6% of the true value. Confirmed by running the R script.
 
 The projected total reserve ($13.1m on a paid-loss basis) came in lower
 than State Farm's own posted reserve ($16.5m, about 20% higher). That gap
 makes sense: the posted reserve likely includes case reserves and a margin 
 for prudence, and may be calculated on an incurred-loss basis rather than a paid-loss basis. 
-Different bases produce different numbers, so a gap here is expected.
+Different bases produce different numbers, hence a gap here is expected.
 
 ## Files
 
