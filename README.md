@@ -1,7 +1,7 @@
 # Chain Ladder reserving using State Farm PP Auto data
 
 Estimates outstanding claims reserves (IBNR) using the Mack chain ladder
-method in R, applied to a real insurer's claims data.
+method in R, applied to an insurer's claims data.
 
 ## Data source
 
@@ -10,27 +10,22 @@ by the Casualty Actuarial Society with S&P Global Market Intelligence.
 
 https://www.casact.org/publications-research/research/research-resources/loss-reserving-data-pulled-naic-schedule-p
 
-143 US insurers, accident years 1998-2007, 10 years of development per
-accident year. Covers liability and medical payments, not physical damage.
-That distinction matters: physical damage claims settle in weeks, but
-liability and medical claims can take years to fully develop, which is
-exactly why chain ladder reserving exists as a method.
+143 US insurers, accident years 1998-2007, 10 years of development per accident year. 
+Covers liability and medical payments but not physical damage. Physical damage 
+claims settle in weeks, however liability and medical claims can take years to fully develop. 
+Therefore, it is important we have methods to investigate IBNR so that we provision enough.
 
 ## Company chosen
 
 State Farm (GRCODE 1767), the largest insurer in the dataset by a wide
 margin (around $18bn net earned premium versus around $3bn for the next
-largest). Picked for a stable, well-populated triangle rather than a
-small insurer with noisier development patterns.
+largest). Picked for a stable, well-populated triangle.
 
-## Why this dataset works well for checking the method, not just running it
+## Why this dataset works well for checking the method
 
-Most reserving exercises only have the upper triangle. You fit a model
-and never find out if the projection was right. This dataset includes
-the full square, both the upper triangle and the true future values that
-later became known. That means the model can be fit on only what would
-genuinely have been known in 2007, and the projection can then be checked
-against what actually happened.
+This dataset includes a full square, both the upper triangle and the true future values 
+that later became known. That means the model can be fit on only what would have been known in 2007, 
+and the projection can then be checked against what really happened.
 
 ## Method
 
@@ -47,15 +42,13 @@ against what actually happened.
 
 The model's projected ultimate losses came within 0.29% of the actual
 total across all ten accident years, individual years were within
-roughly 0.6% of the true value. Confirmed by actually running the script,
-not assumed.
+roughly 0.6% of the true value. Confirmed by actually running the script.
 
 The projected total reserve ($13.1m on a paid-loss basis) came in lower
 than State Farm's own posted reserve ($16.5m, about 20% higher). That gap
-makes sense rather than pointing to an error: the posted reserve likely
-includes case reserves and a margin for prudence, and may be calculated
-on an incurred-loss basis rather than a paid-loss basis. Different bases
-produce different numbers, so a gap here is expected.
+makes sense: the posted reserve likely includes case reserves and a margin 
+for prudence, and may be calculated on an incurred-loss basis rather than a paid-loss basis. 
+Different bases produce different numbers, so a gap here is expected.
 
 ## Files
 
