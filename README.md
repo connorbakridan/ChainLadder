@@ -23,9 +23,10 @@ largest). Picked for a stable, well-populated triangle.
 
 ## Why this dataset works well for checking the method
 
-This dataset includes a full square, both the upper triangle and the true future values 
-that later became known. That means the model can be fit on only what would have been known in 2007, 
-and the projection can then be checked against what really happened.
+This dataset includes the full square, both the upper triangle and the true 
+future values that later became known. That means the model can be fit on only 
+what would have been known in 2007, and the projection can then be checked against 
+what happened in actuality.
 
 ## Method
 
