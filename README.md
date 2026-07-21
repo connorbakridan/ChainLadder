@@ -18,15 +18,15 @@ Therefore, it is important we have methods to investigate IBNR so that we provis
 ## Company chosen
 
 State Farm (GRCODE 1767), the largest insurer in the dataset by a wide
-margin (around $18bn net earned premium versus around $3bn for the next
-largest). Picked for a stable, well-populated triangle.
+margin with around $18bn net earned premium (around $3bn for the next
+largest). Picked for a well-populated triangle.
 
-## Why this dataset works well for checking the method
+## Why this dataset works well for checking the method's accuracy
 
 This dataset includes the full square, both the upper triangle and the true 
 future values that later became known. That means the model can be fit on only 
-what would have been known in 2007, and the projection can then be checked against 
-what happened in actuality.
+what would have been known in 2007 and the projection can then be checked against 
+what happened in actuality after 2007.
 
 ## Method
 
@@ -41,15 +41,15 @@ what happened in actuality.
 
 ## Results
 
-The model's projected ultimate losses came within 0.29% of the actual
-total across all ten accident years, individual years were within
-roughly 0.6% of the true value. Confirmed by running the R script.
+The model's projected ultimate losses came within 0.29% of the actual 
+total across all ten accident years. Individual years were within roughly 
+0.6% of the true value. Confirmed by running the R script.
 
 The projected total reserve ($13.1m on a paid-loss basis) came in lower
-than State Farm's own posted reserve ($16.5m, about 20% higher). That gap
+than State Farm's own posted reserve, $16.5m, which is about 20% higher. That gap
 makes sense: the posted reserve likely includes case reserves and a margin 
 for prudence, and may be calculated on an incurred-loss basis rather than a paid-loss basis. 
-Different bases produce different numbers, hence a gap here is expected.
+Different bases produce different numbers, so a gap here is expected.
 
 ## Files
 
